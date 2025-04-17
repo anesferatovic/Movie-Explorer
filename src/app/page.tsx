@@ -8,11 +8,11 @@ import { usePopularMovies } from '../lib/hooks/usePopularMovies';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
+  const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [year, setYear] = useState<number | null>(null);
   const { movies, error, totalPages } = usePopularMovies(
     currentPage,
-    selectedGenre,
+    selectedGenres,
     year
   );
 
@@ -23,8 +23,8 @@ export default function Home() {
       </header>
       <main>
         <MovieFilters
-          selectedGenre={selectedGenre}
-          onGenreChange={setSelectedGenre}
+          selectedGenres={selectedGenres}
+          onGenreChange={setSelectedGenres}
           year={year}
           onYearChange={setYear}
         />

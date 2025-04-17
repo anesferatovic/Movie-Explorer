@@ -4,7 +4,7 @@ import { Movie } from '../api/utils';
 
 export function usePopularMovies(
   page: number,
-  genreId: number | null,
+  genreIds: number[],
   year: number | null
 ) {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -14,7 +14,7 @@ export function usePopularMovies(
   useEffect(() => {
     async function loadMovies() {
       try {
-        const data = await getPopularMovies(page, genreId, year);
+        const data = await getPopularMovies(page, genreIds, year);
         setMovies(data.results);
         setTotalPages(data.total_pages);
       } catch (error) {
@@ -23,7 +23,7 @@ export function usePopularMovies(
       }
     }
     loadMovies();
-  }, [page, genreId, year]);
+  }, [page, genreIds, year]);
 
   return { movies, error, totalPages };
 }
