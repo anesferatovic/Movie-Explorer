@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getTopRatedMovies } from '../api/topRatedMovies';
 import { Movie } from '../api/utils';
 
-export function useTopRatedMovies(page: number, genreId: number | null) {
+export function useTopRatedMovies(page: number) {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
