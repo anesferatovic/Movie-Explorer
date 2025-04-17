@@ -9,9 +9,11 @@ import { usePopularMovies } from '../lib/hooks/usePopularMovies';
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
+  const [year, setYear] = useState<number | null>(null);
   const { movies, error, totalPages } = usePopularMovies(
     currentPage,
-    selectedGenre
+    selectedGenre,
+    year
   );
 
   return (
@@ -23,6 +25,8 @@ export default function Home() {
         <MovieFilters
           selectedGenre={selectedGenre}
           onGenreChange={setSelectedGenre}
+          year={year}
+          onYearChange={setYear}
         />
         {error ? (
           <p className="text-red-500">{error}</p>
