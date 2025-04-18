@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { FormEvent, useEffect } from 'react';
+import { useSearchStore } from '../../lib/store/searchStore';
 
 const navLinks = [
   { href: '/popular', label: 'Popular' },
@@ -15,12 +16,16 @@ export default function MainNav() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [input, setInput] = useState(searchParams.get('q') || '');
+  const { search, setSearch } = useSearchStore();
 
-  const handleSearch = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (searchParams.get('q')) setSearch(searchParams.get('q') || '');
+  }, []);
+
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    if (input.trim()) {
-      router.push(`/search?q=${encodeURIComponent(input.trim())}`);
+    if (search.trim()) {
+      router.push(`/search?q=${encodeURIComponent(search.trim())}`);
     }
   };
 
@@ -43,8 +48,8 @@ export default function MainNav() {
         <input
           type="text"
           placeholder="Search..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="p-2 border border-gray-300 rounded-md bg-white"
         />
         <button
