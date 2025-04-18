@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useMovieDetails } from '../../../lib/hooks/useMovieDetails';
 import { useSearchStore } from '../../../lib/store/searchStore';
 import { useFavoritesStore } from '../../../lib/store/favoritesStore';
+import { useUserStore } from '../../../lib/store/userStore';
 
 function getImageUrl(path: string | null, size: string = 'w500') {
   return path ? `https://image.tmdb.org/t/p/${size}${path}` : '';
@@ -14,8 +15,14 @@ export default function MovieDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { setSearch } = useSearchStore();
-  const { toggleFavorite, toggleWatchlist, isFavorite, isInWatchlist } =
-    useFavoritesStore();
+  const {
+    toggleFavorite,
+    toggleWatchlist,
+    isFavorite,
+    isInWatchlist,
+    clearAll,
+  } = useFavoritesStore();
+  const { user } = useUserStore();
   const movieId = Array.isArray(params?.id) ? params.id[0] : params?.id;
 
   useEffect(() => {
@@ -31,6 +38,11 @@ export default function MovieDetailPage() {
       router.replace(`/movie/${movieId}`);
     }
   }, []);
+
+  // Clear favorites/watchlist from memory when user logs out
+  useEffect(() => {
+    if (!user) clearAll();
+  }, [user, clearAll]);
 
   const { movie, credits, trailer, error } = useMovieDetails(movieId);
 
@@ -99,22 +111,38 @@ export default function MovieDetailPage() {
           {/* Action buttons */}
           <div className="flex space-x-4 mb-4">
             <button
-              onClick={() => toggleFavorite(movie.id)}
+              onClick={() => user && toggleFavorite(movie.id)}
+              disabled={!user}
               className={`px-4 py-2 rounded-md font-semibold ${
                 isFavorite(movie.id)
                   ? 'bg-red-600'
                   : 'bg-gray-700 hover:bg-red-500'
-              }`}
+              } ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={
+                user
+                  ? isFavorite(movie.id)
+                    ? 'Remove from Favorites'
+                    : 'Add to Favorites'
+                  : 'Sign in to use favorites'
+              }
             >
               {isFavorite(movie.id) ? 'Favorited' : 'Add to Favorites'}
             </button>
             <button
-              onClick={() => toggleWatchlist(movie.id)}
+              onClick={() => user && toggleWatchlist(movie.id)}
+              disabled={!user}
               className={`px-4 py-2 rounded-md font-semibold ${
                 isInWatchlist(movie.id)
                   ? 'bg-blue-600'
                   : 'bg-gray-700 hover:bg-blue-500'
-              }`}
+              } ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={
+                user
+                  ? isInWatchlist(movie.id)
+                    ? 'Remove from Watchlist'
+                    : 'Add to Watchlist'
+                  : 'Sign in to use watchlist'
+              }
             >
               {isInWatchlist(movie.id) ? 'In Watchlist' : 'Add to Watchlist'}
             </button>

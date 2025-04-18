@@ -1,11 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { useFavoritesStore } from '../../lib/store/favoritesStore';
+import { useUserStore } from '../../lib/store/userStore';
 import { Movie } from '@/lib/api/utils';
 
 const MovieList = ({ movies }: { movies: Movie[] }) => {
   const { toggleFavorite, toggleWatchlist, isFavorite, isInWatchlist } =
     useFavoritesStore();
+  const { user } = useUserStore();
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -27,16 +29,19 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
             <h3 className="text-white text-sm font-semibold">{movie.title}</h3>
           </div>
           <button
-            onClick={() => toggleFavorite(movie.id)}
+            onClick={() => user && toggleFavorite(movie.id)}
+            disabled={!user}
             className={`absolute top-2 right-2 p-2 rounded-full ${
               isFavorite(movie.id)
                 ? 'bg-red-500 text-white'
                 : 'bg-gray-200 text-gray-800'
-            } hover:bg-red-400`}
+            } hover:bg-red-400 ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
             title={
-              isFavorite(movie.id)
-                ? 'Remove from Favorites'
-                : 'Add to Favorites'
+              user
+                ? isFavorite(movie.id)
+                  ? 'Remove from Favorites'
+                  : 'Add to Favorites'
+                : 'Sign in to use favorites'
             }
           >
             <svg
@@ -49,16 +54,21 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
             </svg>
           </button>
           <button
-            onClick={() => toggleWatchlist(movie.id)}
+            onClick={() => user && toggleWatchlist(movie.id)}
+            disabled={!user}
             className={`absolute top-2 right-12 p-2 rounded-full ${
               isInWatchlist(movie.id)
                 ? 'bg-blue-400 text-white'
                 : 'bg-gray-200 text-gray-800'
-            } hover:bg-blue-400 hover:text-white`}
+            } hover:bg-blue-400 hover:text-white ${
+              !user ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             title={
-              isInWatchlist(movie.id)
-                ? 'Remove from Watchlist'
-                : 'Add to Watchlist'
+              user
+                ? isInWatchlist(movie.id)
+                  ? 'Remove from Watchlist'
+                  : 'Add to Watchlist'
+                : 'Sign in to use watchlist'
             }
           >
             <svg
