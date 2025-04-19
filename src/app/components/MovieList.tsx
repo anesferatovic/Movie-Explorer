@@ -25,8 +25,21 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
               />
             </div>
           </Link>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2">
+          <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-gray-900/90 via-gray-900/70 to-transparent">
             <h3 className="text-white text-sm font-semibold">{movie.title}</h3>
+            <div className="flex items-center mt-1">
+              <span className="text-yellow-400 font-semibold mr-1">★</span>
+              <span className="text-white text-xs font-medium">
+                {movie.vote_average?.toFixed(1)}
+              </span>
+            </div>
+            {movie.overview && (
+              <div className="mt-1 rounded p-1 bg-gradient-to-t from-gray-800/80 via-gray-800/60 to-transparent">
+                <p className="text-xs text-gray-200 line-clamp-3">
+                  {movie.overview}
+                </p>
+              </div>
+            )}
           </div>
           <button
             onClick={() => user && toggleFavorite(movie.id)}

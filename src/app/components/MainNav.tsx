@@ -6,6 +6,7 @@ import React, { FormEvent, useEffect } from 'react';
 import { useSearchStore } from '../../lib/store/searchStore';
 import { useUserStore } from '../../lib/store/userStore';
 import { signInWithGoogle, signOutUser, auth } from '../../lib/firebase';
+import { useThemeStore } from '../../lib/store/themeStore';
 
 interface User {
   uid: string;
@@ -27,9 +28,11 @@ export default function MainNav() {
   const searchParams = useSearchParams();
   const { search, setSearch } = useSearchStore();
   const { user, setUser, clearUser } = useUserStore();
+  const { theme, toggleTheme } = useThemeStore();
 
   useEffect(() => {
-    if (searchParams.get('q')) setSearch(searchParams.get('q') || '');
+    if (searchParams && searchParams.get('q'))
+      setSearch(searchParams.get('q') || '');
   }, []);
 
   useEffect(() => {
@@ -47,6 +50,12 @@ export default function MainNav() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+  }, [theme]);
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -75,7 +84,10 @@ export default function MainNav() {
   };
 
   return (
-    <nav className="flex items-center gap-2 bg-gray-100 p-4 rounded-md shadow-md mb-8">
+    <nav
+      className={`flex items-center gap-2 p-4 rounded-md shadow-md mb-8 transition-colors
+        ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}
+    >
       {navLinks.map((link) => (
         <Link
           key={link.href}
@@ -104,6 +116,48 @@ export default function MainNav() {
           Search
         </button>
       </form>
+      <button
+        onClick={toggleTheme}
+        className="ml-2 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        title={
+          theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+        }
+      >
+        {theme === 'light' ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-yellow-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="12" r="5" fill="currentColor" />
+            <g stroke="currentColor" strokeWidth="2">
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </g>
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-blue-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              fill="currentColor"
+              d="M21 12.79A9 9 0 0111.21 3a7 7 0 108.58 9.79z"
+            />
+          </svg>
+        )}
+      </button>
       {user && (
         <>
           <Link
@@ -130,7 +184,7 @@ export default function MainNav() {
                 className="w-8 h-8 rounded-full border"
               />
             )}
-            <span className="font-medium">
+            <span className="font-medium text-gray-500">
               {user.displayName || user.email}
             </span>
             <button

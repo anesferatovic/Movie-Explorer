@@ -39,7 +39,6 @@ export default function MovieDetailPage() {
     }
   }, []);
 
-  // Clear favorites/watchlist from memory when user logs out
   useEffect(() => {
     if (!user) clearAll();
   }, [user, clearAll]);
@@ -49,10 +48,9 @@ export default function MovieDetailPage() {
   if (error) return <div className="p-8 text-red-500">{error}</div>;
   if (!movie) return <div className="p-8">Loading...</div>;
 
-  // Get director(s)
   const directors =
     credits?.crew?.filter((c: any) => c.job === 'Director') || [];
-  // Get top 8 cast
+
   const cast = credits?.cast?.slice(0, 8) || [];
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';

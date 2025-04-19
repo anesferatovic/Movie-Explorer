@@ -28,7 +28,7 @@ const Pagination: FC<PaginationProps> = ({
       >
         Previous
       </button>
-      <span className="text-sm">
+      <span className="text-sm text-gray-500">
         Page {currentPage} of {totalPages}
       </span>
       <button
