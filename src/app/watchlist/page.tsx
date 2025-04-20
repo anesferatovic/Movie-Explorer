@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { useFavoritesStore } from '../../lib/store/favoritesStore';
 import { useUserStore } from '../../lib/store/userStore';
 import { useRouter } from 'next/navigation';
-import MovieList from '../components/MovieList';
 import { Movie } from '@/lib/api/utils';
+
+const MovieList = lazy(() => import('../components/MovieList'));
 
 export default function WatchlistPage() {
   const { user } = useUserStore();
@@ -44,11 +45,13 @@ export default function WatchlistPage() {
 
   return (
     <main>
-      <h1 className="text-2xl font-bold mb-4">WATCH LIST</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-500">WATCH LIST</h1>
       {movies.length === 0 ? (
         <p className="text-gray-500">No results.</p>
       ) : (
-        <MovieList movies={movies} />
+        <Suspense fallback={<div>Loading movies...</div>}>
+          <MovieList movies={movies} />
+        </Suspense>
       )}
     </main>
   );

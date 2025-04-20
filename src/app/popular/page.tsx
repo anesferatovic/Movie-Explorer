@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import MovieList from '../components/MovieList';
 import Pagination from '../components/Pagination';
-import MovieFilters from '../components/MovieFilters';
 import { usePopularMovies } from '../../lib/hooks/usePopularMovies';
+
+const MovieFilters = lazy(() => import('../components/MovieFilters'));
 
 export default function PopularPage() {
   const [page, setPage] = useState(1);
@@ -19,12 +20,14 @@ export default function PopularPage() {
 
   return (
     <main>
-      <MovieFilters
-        selectedGenres={selectedGenres}
-        onGenreChange={setSelectedGenres}
-        year={year}
-        onYearChange={setYear}
-      />
+      <Suspense fallback={<div>Loading filters...</div>}>
+        <MovieFilters
+          selectedGenres={selectedGenres}
+          onGenreChange={setSelectedGenres}
+          year={year}
+          onYearChange={setYear}
+        />
+      </Suspense>
       {error ? (
         <p className="text-red-500">{error}</p>
       ) : (

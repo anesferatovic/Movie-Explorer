@@ -44,7 +44,7 @@ export default function FavoritesPage() {
 
   return (
     <main>
-      <h1 className="text-2xl font-bold mb-4">FAVORITE MOVIES</h1>
+      <h1 className="text-2xl font-bold mb-4 text-gray-500">FAVORITE MOVIES</h1>
       {movies.length === 0 ? (
         <p className="text-gray-500">No results.</p>
       ) : (

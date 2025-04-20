@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import MovieList from '../components/MovieList';
+import React, { useState, Suspense, lazy } from 'react';
 import Pagination from '../components/Pagination';
 import { useTopRatedMovies } from '../../lib/hooks/useTopRatedMovies';
+
+const MovieList = lazy(() => import('../components/MovieList'));
 
 export default function TopRatedPage() {
   const [page, setPage] = useState(1);
@@ -15,7 +16,9 @@ export default function TopRatedPage() {
         <p className="text-red-500">{error}</p>
       ) : (
         <>
-          <MovieList movies={movies} />
+          <Suspense fallback={<div>Loading movies...</div>}>
+            <MovieList movies={movies} />
+          </Suspense>
           <Pagination
             currentPage={page}
             totalPages={totalPages}

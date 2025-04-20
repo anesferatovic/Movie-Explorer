@@ -85,7 +85,7 @@ export default function MainNav() {
 
   return (
     <nav
-      className={`flex items-center gap-2 p-4 rounded-md shadow-md mb-8 transition-colors
+      className={`sticky top-0 z-30 flex items-center gap-2 p-4 rounded-md shadow-md mb-8 transition-colors
         ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}
     >
       {navLinks.map((link) => (
@@ -111,14 +111,14 @@ export default function MainNav() {
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
         >
           Search
         </button>
       </form>
       <button
         onClick={toggleTheme}
-        className="ml-2 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="ml-2 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors cursor-pointer"
         title={
           theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
         }
@@ -189,7 +189,7 @@ export default function MainNav() {
             </span>
             <button
               onClick={handleSignOut}
-              className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400 ml-2"
+              className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400 ml-2 cursor-pointer"
             >
               Sign out
             </button>
