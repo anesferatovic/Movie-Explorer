@@ -61,6 +61,7 @@ export default function MainNav() {
     e.preventDefault();
     if (search.trim()) {
       router.push(`/search?q=${encodeURIComponent(search.trim())}`);
+      setSearch('');
     }
   };
 
@@ -85,7 +86,7 @@ export default function MainNav() {
 
   return (
     <nav
-      className={`sticky top-0 z-30 flex items-center gap-2 p-4 rounded-md shadow-md mb-8 transition-colors
+      className={`sticky top-0 z-30 flex items-center gap-2 p-4 rounded-md shadow-md transition-colors
         ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}
     >
       {navLinks.map((link) => (

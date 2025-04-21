@@ -28,13 +28,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+      className="h-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 min-h-screen transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} h-full antialiased bg-white dark:bg-gray-950 transition-colors duration-300`}
       >
-        <MainNav />
-        <ThemeBgWrapper>{children}</ThemeBgWrapper>
+        <div className="flex flex-col h-full min-h-screen gap-6">
+          <MainNav />
+          <ThemeBgWrapper>
+            <div className="flex-1 flex flex-col h-full">{children}</div>
+          </ThemeBgWrapper>
+        </div>
       </body>
     </html>
   );

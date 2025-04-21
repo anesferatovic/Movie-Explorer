@@ -82,38 +82,50 @@ const MovieFilters = ({
   }
 
   return (
-    <div className="flex mb-6 space-y-4">
-      <div>
+    <div className="flex mb-4 px-2 sm:px-4 md:px-8 ">
+      <div className="flex gap-2 w-full">
         <div className="relative" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsDropdownOpen((prev) => !prev)}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white text-left cursor-pointer"
+            className="block px-4 py-2 border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white text-left cursor-pointer w-full min-w-[150px]"
           >
             {selectedGenres.length > 0 ? selectedGenreNames : 'All Genres'}
           </button>
           {isDropdownOpen && (
             <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
-              <div className="max-h-48 overflow-y-auto">
-                {genres.map((genre) => (
-                  <div
-                    key={genre.id}
-                    className={`p-2 cursor-pointer hover:bg-blue-100 ${
-                      tempSelectedGenres.includes(genre.id)
-                        ? 'bg-blue-100 text-blue-800'
-                        : ''
-                    }`}
-                    onClick={() => toggleGenre(genre.id)}
-                  >
-                    {genre.name}
-                  </div>
-                ))}
+              <div
+                className={`p-2 cursor-pointer hover:bg-blue-100 font-semibold ${
+                  tempSelectedGenres.length === 0
+                    ? 'bg-blue-100 text-blue-800'
+                    : ''
+                }`}
+                onClick={() => {
+                  setTempSelectedGenres([]);
+                  onGenreChange([]);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                All genres
               </div>
+              {genres.map((genre) => (
+                <div
+                  key={genre.id}
+                  className={`p-2 cursor-pointer hover:bg-blue-100 ${
+                    tempSelectedGenres.includes(genre.id)
+                      ? 'bg-blue-100 text-blue-800'
+                      : ''
+                  }`}
+                  onClick={() => toggleGenre(genre.id)}
+                >
+                  {genre.name}
+                </div>
+              ))}
               <div className="p-2 border-t border-gray-300 sticky bottom-0 bg-white">
                 <button
                   type="button"
                   onClick={applyGenreSelection}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-full"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-full cursor-pointer"
                 >
                   Apply
                 </button>
@@ -121,15 +133,13 @@ const MovieFilters = ({
             </div>
           )}
         </div>
-      </div>
-      <div>
         <select
           id="year"
           value={year || ''}
           onChange={(e) =>
             onYearChange(e.target.value ? parseInt(e.target.value, 10) : null)
           }
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer"
+          className="block px-4 py-2 border border-gray-950 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white cursor-pointer w-auto min-w-[90px]"
         >
           <option value="">All Years</option>
           {years.map((y) => (

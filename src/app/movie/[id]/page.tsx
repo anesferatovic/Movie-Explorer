@@ -46,7 +46,7 @@ export default function MovieDetailPage() {
   const { movie, credits, trailer, error } = useMovieDetails(movieId);
 
   if (error) return <div className="p-8 text-red-500">{error}</div>;
-  if (!movie) return <div className="p-8">Loading...</div>;
+  if (!movie) return <div className="p-8 text-gray-500">Loading...</div>;
 
   const directors =
     credits?.crew?.filter((c: any) => c.job === 'Director') || [];
