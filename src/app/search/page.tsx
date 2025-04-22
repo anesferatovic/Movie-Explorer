@@ -34,9 +34,9 @@ export default function SearchPage() {
   }, [query, page]);
 
   return (
-    <main className="flex-1 flex flex-col min-h-0 h-full">
-      <div className="flex flex-col flex-1 h-full">
-        <h1 className="text-gray-500 text-2xl font-bold mb-4 px-2 sm:px-4 md:px-8">
+    <main className="flex-1 flex flex-col min-h-screen">
+      <div className="flex flex-col flex-1 max-w-full w-full mx-auto px-2 sm:px-4 md:px-8">
+        <h1 className="text-gray-500 text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
           Search Results{query ? `: ${query}` : ''}
         </h1>
         {!query ? (
@@ -48,13 +48,15 @@ export default function SearchPage() {
         ) : (
           <MovieList movies={result.movies} />
         )}
-        <div className="mt-auto flex justify-center pb-8">
-          <Pagination
-            currentPage={page}
-            totalPages={result.totalPages}
-            onPageChange={setPage}
-          />
-        </div>
+        {result.movies.length > 10 && (
+          <div className="mt-auto flex justify-center pb-8">
+            <Pagination
+              currentPage={page}
+              totalPages={result.totalPages}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
       </div>
     </main>
   );

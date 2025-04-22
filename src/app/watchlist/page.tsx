@@ -6,7 +6,6 @@ import { useUserStore } from '../../lib/store/userStore';
 import { useRouter } from 'next/navigation';
 import { Movie } from '@/lib/api/utils';
 import Pagination from '../components/Pagination';
-import { useSearchStore } from '../../lib/store/searchStore';
 
 const MovieList = lazy(() => import('../components/MovieList'));
 
@@ -17,8 +16,7 @@ export default function WatchlistPage() {
   const { userWatchlist } = useFavoritesStore();
   const [movies, setMovies] = useState<Movie[]>([]);
   const router = useRouter();
-  const { lastPageWatchlist, setLastPageWatchlist } = useSearchStore();
-  const [page, setPage] = useState(lastPageWatchlist || 1);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (!user) {
@@ -47,10 +45,6 @@ export default function WatchlistPage() {
     };
   }, [user, userWatchlist, router]);
 
-  useEffect(() => {
-    setLastPageWatchlist(page);
-  }, [page, setLastPageWatchlist]);
-
   if (!user) return null;
 
   const totalPages = Math.ceil(movies.length / MOVIES_PER_PAGE) || 1;
@@ -66,13 +60,13 @@ export default function WatchlistPage() {
   }, [page, totalPages]);
 
   return (
-    <main className="flex flex-col flex-1 min-h-0 pb-8">
-      <h1 className="text-gray-500 text-2xl font-bold mb-4 px-2 sm:px-4 md:px-8">
+    <main className="flex flex-col min-h-screen pb-8">
+      <h1 className="text-gray-500 text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 px-2 sm:px-4 md:px-8">
         WATCH LIST
       </h1>
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col max-w-full w-full mx-auto px-2 sm:px-4 md:px-8">
         {movies.length === 0 ? (
-          <p className="text-gray-500">No results.</p>
+          <p className="text-gray-500 px-2 sm:px-4 md:px-8">No results.</p>
         ) : (
           <Suspense
             fallback={<div className="text-gray-500">Loading movies...</div>}
@@ -80,13 +74,15 @@ export default function WatchlistPage() {
             <MovieList movies={paginatedMovies} />
           </Suspense>
         )}
-      </div>
-      <div className="mt-auto flex justify-center pb-8">
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-        />
+        {movies.length > 10 && (
+          <div className="mt-auto flex justify-center pb-8">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
       </div>
     </main>
   );

@@ -82,7 +82,7 @@ const MovieFilters = ({
   }
 
   return (
-    <div className="flex mb-4 px-2 sm:px-4 md:px-8 ">
+    <div className="flex mb-4 px-2 sm:px-4 md:px-16">
       <div className="flex gap-2 w-full">
         <div className="relative" ref={dropdownRef}>
           <button

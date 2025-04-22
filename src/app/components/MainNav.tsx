@@ -86,7 +86,7 @@ export default function MainNav() {
 
   return (
     <nav
-      className={`sticky top-0 z-30 flex items-center gap-2 p-4 rounded-md shadow-md transition-colors
+      className={`sticky top-0 z-30 flex flex-wrap items-center gap-2 p-2 sm:p-4 rounded-md shadow-md transition-colors
         ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}
     >
       {navLinks.map((link) => (
@@ -102,17 +102,20 @@ export default function MainNav() {
           {link.label}
         </Link>
       ))}
-      <form onSubmit={handleSearch} className="ml-auto flex gap-2">
+      <form
+        onSubmit={handleSearch}
+        className="ml-auto flex gap-2 w-full sm:w-auto"
+      >
         <input
           type="text"
           placeholder="Search..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md bg-white"
+          className="p-2 border border-gray-300 rounded-md bg-white w-full sm:w-auto text-base sm:text-sm"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 cursor-pointer text-base sm:text-sm"
         >
           Search
         </button>
@@ -198,7 +201,7 @@ export default function MainNav() {
         ) : (
           <button
             onClick={handleGoogleSignIn}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-2"
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 ml-2 cursor-pointer"
           >
             Sign in with Google
           </button>

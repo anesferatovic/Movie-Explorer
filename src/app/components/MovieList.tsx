@@ -14,7 +14,7 @@ const MovieList = ({ movies }: { movies: Movie[] }) => {
       {movies.map((movie) => (
         <div
           key={movie.id}
-          className="relative bg-gray-800 rounded-lg overflow-hidden shadow-lg"
+          className="relative bg-gray-800 rounded-lg overflow-hidden shadow-lg min-w-0"
         >
           <Link href={`/movie/${movie.id}`}>
             <div className="w-full h-60 overflow-hidden cursor-pointer">
